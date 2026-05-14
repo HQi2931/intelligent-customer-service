@@ -1,0 +1,50 @@
+﻿version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY}
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./chroma_db:/app/chroma_db
+      - ./logs:/app/logs
+    depends_on:
+      chromadb:
+        condition: service_healthy
+    restart: unless-stopped
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    ports:
+      - "8501:8501"
+    environment:
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY}
+      - API_BASE_URL=http://api:8000
+    volumes:
+      - ./chroma_db:/app/chroma_db
+      - ./logs:/app/logs
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  chromadb:
+    image: chromadb/chroma:0.5.23
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./chroma_db:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v2/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped

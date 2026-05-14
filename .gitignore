@@ -1,0 +1,39 @@
+﻿# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+
+# Logs & Data
+logs/
+*.log
+chroma_db/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Nginx runtime
+nginx/logs/
+nginx/temp/
+nginx/*.exe
+nginx/*.dll
+nginx/*.pdb
+nginx/docs/
+nginx/contrib/
+nginx/html/
+nginx/.hgtags

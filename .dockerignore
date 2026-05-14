@@ -1,0 +1,11 @@
+﻿.venv/
+__pycache__/
+*.pyc
+*.pyo
+.git/
+.gitignore
+chroma_db/
+logs/
+.vscode/
+.env
+*.log
